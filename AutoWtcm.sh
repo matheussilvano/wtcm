@@ -23,6 +23,8 @@
 ARQUIVO_LISTA_CONTAS="/home/matheus.silvano/lista_de_contas.txt"
 # Caminho para o backup
 CAMINHO_BACKUP="/home/skyline/DEMO.GUSTAVOD/WTCM_TRIBANCO_backup"
+# Caminho TRIBANCO.TRIBANCO
+CAMINHO_TRIBANCO="TRIBANCO.TRIBANCO"
 
 # Função para verificar se o arquivo de lista de contas tem conteúdo
 verificar_conteudo_lista_contas() {
@@ -38,12 +40,7 @@ verificar_conteudo_lista_contas
 # Solicitar WTCM
 echo "Solicitando WTCM..."
 cd
-vi wtcmactions.ini << EOF
-/TRIBANCO.TRIBANCO
-:insert
-s/command=0/command=1/
-:wq
-EOF
+sed -i 's/"${VAR}".command=0/"${VAR}".command=1/' wtcmactions.ini
 clear
 
 # Aguardar o recebimento do WTCM
@@ -79,12 +76,7 @@ clear
 
 # Atualizar wtcmactions.ini para command=2
 cd
-vi wtcmactions.ini << EOF
-/TRIBANCO.TRIBANCO
-:insert
-s/command=?/command=2/
-:wq
-EOF
+sed -i 's/"${VAR}".command=./"${VAR}".command=2/' wtcmactions.ini
 clear
 
 # Limpar arquivo de lista de contas
