@@ -23,6 +23,17 @@ ARQUIVO_LISTA_CONTAS="/home/matheus.silvano/lista_de_contas.txt"
 # Caminho para o backup
 CAMINHO_BACKUP="/home/skyline/DEMO.GUSTAVOD/WTCM_TRIBANCO_backup"
 
+# Função para verificar se o arquivo de lista de contas tem conteúdo
+verificar_conteudo_lista_contas() {
+    if [ ! -s "$ARQUIVO_LISTA_CONTAS" ]; then
+        echo "O arquivo de lista de contas está vazio ou não existe. Encerrando o processo."
+        exit 1
+    fi
+}
+
+# Verificar se há conteúdo no arquivo de lista de contas
+verificar_conteudo_lista_contas
+
 # Solicitar WTCM
 echo "Solicitando WTCM..."
 cd
