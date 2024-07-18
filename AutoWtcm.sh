@@ -13,6 +13,7 @@
 # - r $ARQUIVO_LISTA_CONTAS vai funcionar na edição do wtcm?
 # - $ da edição do wtcm tem que ser mudado, pois não fica na última linha do arquivo
 # - validar a edição da data no wtcm
+# - s/command=?/command=2/
 #
 #######################################################
 
@@ -81,7 +82,7 @@ cd
 vi wtcmactions.ini << EOF
 /TRIBANCO.TRIBANCO
 :insert
-s/command=1/command=2/
+s/command=?/command=2/
 :wq
 EOF
 clear
