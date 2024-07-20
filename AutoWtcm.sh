@@ -1,21 +1,13 @@
-#############################################
-#
-# AutoWtcm.sh - Script para realizar o envio automático do WTCM
-#
-# Autor: Matheus Silvano
-# Data Criação: 17/07/2024
-#
-# Descrição: Realiza a solicitação, edição e envio do WTCM automaticamente
-#
-# Exemplo de uso: home/matheus.silvano/AutoWtcm.sh
-#
-# Dúvidas para tirar com o Junior Leal:
-# - r $ARQUIVO_LISTA_CONTAS vai funcionar na edição do wtcm?
-# - $ da edição do wtcm tem que ser mudado, pois não fica na última linha do arquivo
-# - validar a edição da data no wtcm
-# - s/command=?/command=2/
-#
-#######################################################
+######################################################################################
+##                                                                                  ##
+##     AutoWtcm.sh - Script para realizar o envio automático do WTCM                ##
+##                                                                                  ##
+##     Autor: Matheus Silvano                                                       ##
+##     Data Criação: 17/07/2024                                                     ##
+##                                                                                  ##
+##     Descrição: Realiza a solicitação, edição e envio do WTCM automaticamente     ##
+##                                                                                  ##
+######################################################################################
 
 #!/bin/bash
 
@@ -25,6 +17,10 @@ ARQUIVO_LISTA_CONTAS="/home/matheus.silvano/lista_de_contas.txt"
 CAMINHO_BACKUP="/home/skyline/DEMO.GUSTAVOD/WTCM_TRIBANCO_backup"
 # Caminho TRIBANCO.TRIBANCO
 CAMINHO_TRIBANCO="TRIBANCO.TRIBANCO"
+# Data de Hoje no formato YYYYmmdd
+DATA_HOJE_YYYYmmdd=$(date +%Y%m%d)
+# Data de Hoje no formato dd/mm/YYYY
+DATA_HOJE_PADRAO=$(date +%d/%m/%Y)
 
 # Função para verificar se o arquivo de lista de contas tem conteúdo
 verificar_conteudo_lista_contas() {
@@ -61,17 +57,14 @@ clear
 # Editar WTCM com as novas contas
 echo "Editando WTCM..."
 cd wtcm
-vi wtcm.TRIBANCO.TRIBANCO << EOF
-:$
-r $ARQUIVO_LISTA_CONTAS
-:wq
-EOF
+linha=$(grep -n 'outbox' wtcm.TRIBANCO.TRIBANCO | tail -1 | cut -d: -f1)
+awk -v linha="$linha" -v arquivo="$ARQUIVO_LISTA_CONTAS" 'NR==linha {print; system("cat " arquivo)} 1' wtcm.TRIBANCO.TRIBANCO > temp && mv temp wtcm.TRIBANCO.TRIBANCO
 clear
 
+
 # Criar backup do WTCM editado
-DATA_HOJE=$(date +%Y%m%d)
 echo "Criando backup do WTCM editado..."
-cp -pv wtcm.TRIBANCO.TRIBANCO $CAMINHO_BACKUP/Evidencia_$DATA_HOJE
+cp -pv wtcm.TRIBANCO.TRIBANCO $CAMINHO_BACKUP/Evidencia_$DATA_HOJE_YYYYmmdd
 clear
 
 # Atualizar wtcmactions.ini para command=2
